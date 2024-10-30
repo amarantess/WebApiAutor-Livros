@@ -15,15 +15,38 @@ namespace WebApiAutor_Livros.Services.Autor
         }
 
         // Métodos da interface
-        public Task<ResponseModel<AutorModel>> BuscarAutorPorId(int idAutor)
+        public async Task<ResponseModel<AutorModel>> BuscarAutorPorId(int idAutor)
         {
-            throw new NotImplementedException();
+            ResponseModel<AutorModel> resposta = new ResponseModel<AutorModel>();
+
+            try
+            {
+                var autor = await _context.Autores.FirstOrDefaultAsync(autorbanco => autorbanco.Id == idAutor);
+
+                if (autor == null)
+                {
+                    resposta.Mensagem = "Autor não localizado.";
+                    return resposta;
+                }
+
+                resposta.Dados = autor;
+                resposta.Mensagem = "Autor localizado";
+                return resposta;
+            }
+            catch (Exception ex) 
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
         }
+
 
         public Task<ResponseModel<AutorModel>> BuscarAutorPorIdLivro(int idLivro)
         {
             throw new NotImplementedException();
         }
+
 
         public async Task<ResponseModel<List<AutorModel>>> ListarAutores()
         {
