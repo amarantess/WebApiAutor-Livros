@@ -17,5 +17,8 @@ namespace WebApiAutor_Livros.Services.Autor
 
         // Método que irá criar um novo autor
         Task<ResponseModel<List<AutorModel>>> CriarAutor(AutorCriacaoDto autorCriacaoDto);
+
+        // Método que irá editar um autor
+        Task<ResponseModel<List<AutorModel>>> EditarAutor(AutorEdicaoDto autorEdicaoDto);
     }
 }

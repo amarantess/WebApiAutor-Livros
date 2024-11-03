@@ -41,11 +41,20 @@ namespace WebApiAutor_Livros.Controllers
             return Ok(autor);
         }
 
+
         [HttpPost("CriarAutor")]
         public async Task<ActionResult<ResponseModel<AutorModel>>> CriarAutor(AutorCriacaoDto autorCriacaoDto)
         {
             var autores = await _autorInterface.CriarAutor(autorCriacaoDto);
             return Ok(autores);
-        } 
+        }
+
+
+        [HttpPut("EditarAutor")]
+        public async Task<ActionResult<ResponseModel<AutorModel>>> EditarAutor(AutorEdicaoDto autorEdicaoDto)
+        {
+            var autores = await _autorInterface.EditarAutor(autorEdicaoDto);
+            return Ok(autores);
+        }
     }
 }

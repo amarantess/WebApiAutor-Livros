@@ -102,6 +102,41 @@ namespace WebApiAutor_Livros.Services.Autor
 
         }
 
+        public async Task<ResponseModel<List<AutorModel>>> EditarAutor(AutorEdicaoDto autorEdicaoDto)
+        {
+            ResponseModel<List<AutorModel>> resposta = new ResponseModel<List<AutorModel>>();
+
+            try
+            {
+                var autor = await _context.Autores.FirstOrDefaultAsync(autorBanco => autorBanco.Id == autorEdicaoDto.Id);
+
+                if (autor == null)
+                {
+                    resposta.Mensagem = "Nenhum autor localizado";
+                    return resposta;
+                }
+
+                autor.Nome = autorEdicaoDto.Nome;
+                autor.Sobrenome = autorEdicaoDto.Sobrenome;
+
+                _context.Update(autor);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.Autores.ToListAsync();
+                resposta.Mensagem = "Autor editado com sucesso!";
+
+                return resposta;
+
+            }
+            catch(Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
+        }
+
         public async Task<ResponseModel<List<AutorModel>>> ListarAutores()
         {
             ResponseModel<List<AutorModel>> resposta = new ResponseModel<List<AutorModel>>();
