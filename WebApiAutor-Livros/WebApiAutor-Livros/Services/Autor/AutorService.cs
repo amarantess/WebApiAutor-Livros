@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiAutor_Livros.Data;
+using WebApiAutor_Livros.DTO.Autor;
 using WebApiAutor_Livros.Models;
 
 namespace WebApiAutor_Livros.Services.Autor
@@ -70,6 +71,36 @@ namespace WebApiAutor_Livros.Services.Autor
             }
         }
 
+        public async Task<ResponseModel<List<AutorModel>>> CriarAutor(AutorCriacaoDto autorCriacaoDto)
+        {
+            ResponseModel<List<AutorModel>> resposta = new ResponseModel<List<AutorModel>>();
+
+            try
+            {
+
+                var autor = new AutorModel()
+                {
+                    Nome = autorCriacaoDto.Nome,
+                    Sobrenome = autorCriacaoDto.Sobrenome
+                };
+
+                _context.Add(autor);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.Autores.ToListAsync();
+                resposta.Mensagem = "Autor criado com sucesso!";
+
+                return resposta;
+
+            }
+            catch(Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
+        }
 
         public async Task<ResponseModel<List<AutorModel>>> ListarAutores()
         {

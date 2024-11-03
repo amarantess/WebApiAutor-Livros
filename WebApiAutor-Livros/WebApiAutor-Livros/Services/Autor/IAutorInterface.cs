@@ -1,4 +1,5 @@
-﻿using WebApiAutor_Livros.Models;
+﻿using WebApiAutor_Livros.DTO.Autor;
+using WebApiAutor_Livros.Models;
 
 namespace WebApiAutor_Livros.Services.Autor
 {
@@ -13,5 +14,8 @@ namespace WebApiAutor_Livros.Services.Autor
 
         // Método que irá responder a busca de um autor pelo ID do livro
         Task<ResponseModel<AutorModel>> BuscarAutorPorIdLivro(int idLivro);
+
+        // Método que irá criar um novo autor
+        Task<ResponseModel<List<AutorModel>>> CriarAutor(AutorCriacaoDto autorCriacaoDto);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApiAutor_Livros.DTO.Autor;
 using WebApiAutor_Livros.Models;
 using WebApiAutor_Livros.Services.Autor;
 
@@ -32,11 +33,19 @@ namespace WebApiAutor_Livros.Controllers
             return Ok(autor);
         }
 
+
         [HttpGet("BuscarAutorPorIdLivro/{idLivro}")]
         public async Task<ActionResult<ResponseModel<AutorModel>>> BuscarAutorPorIdLivro(int idLivro)
         {
             var autor = await _autorInterface.BuscarAutorPorIdLivro(idLivro);
             return Ok(autor);
         }
+
+        [HttpPost("CriarAutor")]
+        public async Task<ActionResult<ResponseModel<AutorModel>>> CriarAutor(AutorCriacaoDto autorCriacaoDto)
+        {
+            var autores = await _autorInterface.CriarAutor(autorCriacaoDto);
+            return Ok(autores);
+        } 
     }
 }
