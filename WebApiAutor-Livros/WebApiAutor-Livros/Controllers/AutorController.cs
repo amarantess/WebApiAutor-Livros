@@ -56,5 +56,13 @@ namespace WebApiAutor_Livros.Controllers
             var autores = await _autorInterface.EditarAutor(autorEdicaoDto);
             return Ok(autores);
         }
+
+
+        [HttpDelete("ExcluirAutor/{idAutor}")]
+        public async Task<ActionResult<ResponseModel<AutorModel>>> ExcluirAutor(int idAutor)
+        {
+            var autor = await _autorInterface.ExcluirAutor(idAutor);
+            return Ok(autor);
+        }
     }
 }

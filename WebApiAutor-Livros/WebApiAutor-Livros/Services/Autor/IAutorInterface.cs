@@ -20,5 +20,8 @@ namespace WebApiAutor_Livros.Services.Autor
 
         // Método que irá editar um autor
         Task<ResponseModel<List<AutorModel>>> EditarAutor(AutorEdicaoDto autorEdicaoDto);
+
+        // Método que irá excluir um autor
+        Task<ResponseModel<List<AutorModel>>> ExcluirAutor(int idAutor);
     }
 }
