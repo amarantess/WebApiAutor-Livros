@@ -1,13 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebApiAutor_Livros.Data;
 using WebApiAutor_Livros.DTO.Autor;
 using WebApiAutor_Livros.Models;
+using WebApiAutor_Livros.Services.AutoMapper.Autor;
 
 namespace WebApiAutor_Livros.Services.Autor
 {
     // A classe implementa os métodos que estão na interface
     public class AutorService : IAutorInterface
     {
+        //private readonly IMapper _mapper;
+
         // O construtor recebe as informações do  banco de dados como parâmetro e passa para a variavel "_context"
         private readonly AppDbContext _context;
         public AutorService(AppDbContext context)
@@ -77,12 +81,12 @@ namespace WebApiAutor_Livros.Services.Autor
 
             try
             {
-
-                var autor = new AutorModel()
+                var autoMapper = new MapperConfiguration(options =>
                 {
-                    Nome = autorCriacaoDto.Nome,
-                    Sobrenome = autorCriacaoDto.Sobrenome
-                };
+                    options.AddProfile(new AutoMappingForCreation());
+                }).CreateMapper();
+
+                var autor = autoMapper.Map<AutorModel>(autorCriacaoDto);
 
                 _context.Add(autor);
                 await _context.SaveChangesAsync();
@@ -116,8 +120,10 @@ namespace WebApiAutor_Livros.Services.Autor
                     return resposta;
                 }
 
+
                 autor.Nome = autorEdicaoDto.Nome;
                 autor.Sobrenome = autorEdicaoDto.Sobrenome;
+
 
                 _context.Update(autor);
                 await _context.SaveChangesAsync();
