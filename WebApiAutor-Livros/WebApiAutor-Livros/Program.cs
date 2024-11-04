@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiAutor_Livros.Data;
 using WebApiAutor_Livros.Services.Autor;
+using WebApiAutor_Livros.Services.Livro;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 // Injeção de dependência para a interface se comunicar com a classe, os métodos que estão na interface serão utilizados pela classe
 builder.Services.AddScoped<IAutorInterface, AutorService>();
+
+builder.Services.AddScoped<ILivroInterface, LivroService>();
 
 // Configuração para definir o banco de dados e para a classe receber a string de conexão
 builder.Services.AddDbContext<AppDbContext>(options =>
