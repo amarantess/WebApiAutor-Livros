@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiAutor_Livros.Data;
+using WebApiAutor_Livros.DTO.Livro;
 using WebApiAutor_Livros.Models;
 
 namespace WebApiAutor_Livros.Services.Livro
@@ -59,6 +60,43 @@ namespace WebApiAutor_Livros.Services.Livro
                 return resposta;
             }
             catch(Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
+        }
+
+        public async Task<ResponseModel<List<LivroModel>>> CriarLivro(LivroCriacaoDto livroCriacaoDto)
+        {
+            ResponseModel<List<LivroModel>> resposta = new ResponseModel<List<LivroModel>>();
+
+            try
+            {
+                var autor = await _context.Autores.FirstOrDefaultAsync(autorBanco => autorBanco.Id == livroCriacaoDto.Autor.Id);
+
+                if (autor == null)
+                {
+                    resposta.Mensagem = "Nenhum registro encontrado";
+                    return resposta;
+                }
+
+
+                var livro =  new LivroModel()
+                {
+                    Titulo = livroCriacaoDto.Titulo,
+                    Autor = autor
+                };
+
+                _context.Add(livro);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.Livros.Include(a => a.Autor).ToListAsync();
+                resposta.Mensagem = "Livro criado com sucesso";
+                return resposta;
+            }
+            catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
                 resposta.Status = false;
