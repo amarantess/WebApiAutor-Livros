@@ -48,5 +48,13 @@ namespace WebApiAutor_Livros.Controllers
             var livro =  await _livroInterface.CriarLivro(livroCriacaoDto);
             return Ok(livro);
         }
+
+
+        [HttpPut("EditarLivro")]
+        public async Task<ActionResult<ResponseModel<List<LivroModel>>>> EditarLivro (LivroEdicaoDto livroEdicaoDto)
+        {
+            var livro =  await _livroInterface.EditarLivro(livroEdicaoDto);
+            return Ok(livro);
+        }
     }
 }

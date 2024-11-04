@@ -18,5 +18,8 @@ namespace WebApiAutor_Livros.Services.Livro
         // Método que irá criar um novo livro
         Task<ResponseModel<List<LivroModel>>> CriarLivro(LivroCriacaoDto livroCriacaoDto);
 
+        // Método que irá editar um livro
+        Task<ResponseModel<List<LivroModel>>> EditarLivro(LivroEdicaoDto livroEdicaoDto);
+
     }
 }

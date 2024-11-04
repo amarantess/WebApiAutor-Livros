@@ -105,6 +105,38 @@ namespace WebApiAutor_Livros.Services.Livro
 
         }
 
+        public async Task<ResponseModel<List<LivroModel>>> EditarLivro(LivroEdicaoDto livroEdicaoDto)
+        {
+            ResponseModel<List<LivroModel>> resposta = new ResponseModel<List<LivroModel>>();
+
+            try
+            {
+                var livro = await _context.Livros.Include(a => a.Autor).FirstOrDefaultAsync(livroBanco => livroBanco.Id == livroEdicaoDto.Id);
+                if (livro == null)
+                {
+                    resposta.Mensagem = "Nenhum registro encontrado";
+                    return resposta;
+                }
+
+                livro.Titulo = livroEdicaoDto.Titulo;
+                _context.Livros.Update(livro);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.Livros.Include(a => a.Autor).ToListAsync();
+                resposta.Mensagem = "Livro editado com sucesso";
+
+                return resposta;
+
+            }
+            catch(Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
+        }
+
         public async Task<ResponseModel<List<LivroModel>>> ListarLivros()
         {
             ResponseModel<List<LivroModel>> resposta = new ResponseModel<List<LivroModel>>();
