@@ -137,6 +137,35 @@ namespace WebApiAutor_Livros.Services.Livro
 
         }
 
+        public async Task<ResponseModel<List<LivroModel>>> ExcluirLivro(int idLivro)
+        {
+            ResponseModel<List<LivroModel>> resposta = new ResponseModel<List<LivroModel>>();
+
+            try
+            {
+                var livro = await _context.Livros.FirstOrDefaultAsync(livroBanco => livroBanco.Id == idLivro);
+                if (livro == null)
+                {
+                    resposta.Mensagem = "Nenhum registro encontrado";
+                    return resposta;
+                }
+
+                _context.Livros.Remove(livro); 
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = await _context.Livros.Include(a => a.Autor).ToListAsync();
+                resposta.Mensagem = "Livro excluido com sucesso";
+                return resposta;
+               
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
         public async Task<ResponseModel<List<LivroModel>>> ListarLivros()
         {
             ResponseModel<List<LivroModel>> resposta = new ResponseModel<List<LivroModel>>();

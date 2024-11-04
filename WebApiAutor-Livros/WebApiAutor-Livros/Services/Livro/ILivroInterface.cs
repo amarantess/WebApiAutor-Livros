@@ -21,5 +21,8 @@ namespace WebApiAutor_Livros.Services.Livro
         // Método que irá editar um livro
         Task<ResponseModel<List<LivroModel>>> EditarLivro(LivroEdicaoDto livroEdicaoDto);
 
+        // Método que irá excluir um livro
+        Task<ResponseModel<List<LivroModel>>> ExcluirLivro(int  idLivro);
+
     }
 }
